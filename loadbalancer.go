@@ -5,19 +5,25 @@ import (
 	"errors"
 	"sync"
 	"sync/atomic"
-
 )
 
 type BalanceType string
 
 const (
-	RRBalanceType             BalanceType = "RoundRobin"
-	WRRBalanceType            BalanceType = "WeightedRoundRobin"
-	ConsistentHashBalanceType BalanceType = "ConsistentHash"
-	LCBalanceType             BalanceType = "LeastConnection"
-	SEDBalanceType            BalanceType = "ShortestExpectedDelay"
-	WLCBalanceType            BalanceType = "WeightedLeastConnection"
-	NQBalanceType             BalanceType = "NeverQueue"
+	// RoundRobin 轮询
+	RRBalanceType BalanceType = "RR"
+	// WeightedRoundRobin 加权轮询
+	WRRBalanceType BalanceType = "WRR"
+	// ConsistentHash
+	ConsistentHashBalanceType BalanceType = "CH"
+	// LeastConnection 最小连接数
+	LCBalanceType BalanceType = "LC"
+	// ShortestExpectedDelay 最短期望延迟
+	SEDBalanceType BalanceType = "SED"
+	// WeightedLeastConnection
+	WLCBalanceType BalanceType = "WLC"
+	// NeverQueuejum
+	NQBalanceType BalanceType = "NQ"
 )
 
 type EndpointMeta interface {
@@ -82,3 +88,11 @@ var (
 	ErrNoEndpoint = errors.New("no endpoint available")
 	ErrNoSourceIP = errors.New("no source ip")
 )
+
+func CheckBalanceType(balance string) bool {
+	switch BalanceType(balance) {
+	case RRBalanceType, WRRBalanceType, ConsistentHashBalanceType, LCBalanceType, SEDBalanceType, WLCBalanceType, NQBalanceType:
+		return true
+	}
+	return false
+}
