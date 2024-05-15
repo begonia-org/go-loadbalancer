@@ -52,7 +52,7 @@ func (r *RoundRobinBalance) RemoveEndpoint(endpoint Endpoint) {
 }
 
 func (r *RoundRobinBalance) Name() string {
-	return "RoundRobin"
+	return string(RRBalanceType)
 }
 
 func (r *RoundRobinBalance) Close() error {
