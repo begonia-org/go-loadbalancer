@@ -163,8 +163,6 @@ func NewPoolOptions(Dialer func(context.Context) (Connection, error), opts ...Po
 
 }
 
-
-
 func NewConnPool(opt *PoolOptions) Pool {
 	p := &ConnPool{
 		cfg: opt,
@@ -211,7 +209,7 @@ func (p *ConnPool) checkMinIdleConns() {
 
 					atomic.AddInt32(&p.poolSize, -1)
 					atomic.AddInt32(&p.idleConnsLen, -1)
-	
+
 				}
 
 				p.freeTurn()
@@ -460,6 +458,9 @@ func (p *ConnPool) popIdle() (Connection, error) {
 
 // Release 将连接放回连接池
 func (p *ConnPool) Release(ctx context.Context, cn Connection) {
+	if cn == nil {
+		return
+	}
 	defer func() {
 		atomic.AddInt32(&p.stats.InUsedConns, -1)
 		p.freeTurn()
